@@ -1431,50 +1431,48 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    function esEnlaceExternoValido(enlace) {
+      var destino = enlace.getAttribute("href");
+
+      return Boolean(
+        destino &&
+        !destino.startsWith("#") &&
+        !destino.startsWith("javascript:") &&
+        !destino.startsWith("mailto:") &&
+        !destino.startsWith("tel:")
+      );
+    }
+
     function prepararEnlaces() {
-      const enlaces = document.querySelectorAll("a[href]");
+      var enlaces = document.querySelectorAll("a[href]");
 
       enlaces.forEach(function (enlace) {
-        const destino = enlace.getAttribute("href");
-
-        if (
-          destino &&
-          !destino.startsWith("#") &&
-          !destino.startsWith("javascript:")
-        ) {
-          enlace.setAttribute("target", "_self");
-          enlace.removeAttribute("rel");
+        if (esEnlaceExternoValido(enlace)) {
+          enlace.setAttribute("target", "_blank");
+          enlace.setAttribute("rel", "noopener noreferrer");
         }
       });
     }
 
     prepararEnlaces();
 
-    const observador = new MutationObserver(prepararEnlaces);
+    var observador = new MutationObserver(prepararEnlaces);
     observador.observe(document.body || document.documentElement, {
       childList: true,
       subtree: true
     });
 
     document.addEventListener("click", function (evento) {
-      const enlace = evento.target.closest("a[href]");
+      var enlace = evento.target.closest("a[href]");
 
-      if (!enlace) {
+      if (!enlace || !esEnlaceExternoValido(enlace)) {
         return;
       }
 
-      const destino = enlace.getAttribute("href");
+      evento.preventDefault();
+      evento.stopPropagation();
 
-      if (
-        destino &&
-        !destino.startsWith("#") &&
-        !destino.startsWith("javascript:")
-      ) {
-        evento.preventDefault();
-        evento.stopPropagation();
-        evento.stopImmediatePropagation();
-        window.location.assign(enlace.href);
-      }
+      window.open(enlace.href, "_blank", "noopener,noreferrer");
     }, true);
   });
 </script>
