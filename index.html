@@ -1431,6 +1431,31 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    function prepararEnlaces() {
+      const enlaces = document.querySelectorAll("a[href]");
+
+      enlaces.forEach(function (enlace) {
+        const destino = enlace.getAttribute("href");
+
+        if (
+          destino &&
+          !destino.startsWith("#") &&
+          !destino.startsWith("javascript:")
+        ) {
+          enlace.setAttribute("target", "_self");
+          enlace.removeAttribute("rel");
+        }
+      });
+    }
+
+    prepararEnlaces();
+
+    const observador = new MutationObserver(prepararEnlaces);
+    observador.observe(document.body || document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+
     document.addEventListener("click", function (evento) {
       const enlace = evento.target.closest("a[href]");
 
@@ -1446,8 +1471,10 @@
         !destino.startsWith("javascript:")
       ) {
         evento.preventDefault();
-        window.location.href = enlace.href;
+        evento.stopPropagation();
+        evento.stopImmediatePropagation();
+        window.location.assign(enlace.href);
       }
-    });
+    }, true);
   });
 </script>
