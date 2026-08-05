@@ -1429,11 +1429,15 @@
 
 </div>
 
-<script> 
+<script>
   document.addEventListener("DOMContentLoaded", function () {
-    const enlaces = document.querySelectorAll("a[href]");
+    document.addEventListener("click", function (evento) {
+      const enlace = evento.target.closest("a[href]");
 
-    enlaces.forEach(function (enlace) {
+      if (!enlace) {
+        return;
+      }
+
       const destino = enlace.getAttribute("href");
 
       if (
@@ -1441,19 +1445,8 @@
         !destino.startsWith("#") &&
         !destino.startsWith("javascript:")
       ) {
-        enlace.setAttribute("target", "_blank");
-        enlace.setAttribute("rel", "noopener noreferrer");
-
-        enlace.addEventListener("click", function (evento) {
-          evento.preventDefault();
-          evento.stopPropagation();
-
-          const url = enlace.href;
-
-          if (url) {
-            window.open(url, "_blank", "noopener,noreferrer");
-          }
-        });
+        evento.preventDefault();
+        window.location.href = enlace.href;
       }
     });
   });
