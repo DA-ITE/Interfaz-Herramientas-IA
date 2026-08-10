@@ -533,11 +533,39 @@
 }
 
 #sise-andragogia-home .sise-module-card p{
-  min-height:82px;
-  margin:0 0 27px;
-  color:rgba(255,255,255,.7);
+  margin:0 0 18px;
+  color:rgba(255,255,255,.78);
   font-size:16px;
   line-height:1.55;
+}
+
+#sise-andragogia-home .sise-module-topics{
+  margin:0 0 24px;
+  padding:16px 17px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+}
+
+#sise-andragogia-home .sise-module-topics strong{
+  display:block;
+  margin-bottom:9px;
+  color:#FF8AAF;
+  font-size:13px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+
+#sise-andragogia-home .sise-module-topics ul{
+  margin:0;
+  padding-left:20px;
+}
+
+#sise-andragogia-home .sise-module-topics li{
+  margin:6px 0;
+  color:rgba(255,255,255,.82);
+  font-size:15px;
+  line-height:1.4;
 }
 
 #sise-andragogia-home .sise-module-btn{
@@ -1198,14 +1226,23 @@
         </div>
 
         <h3>
-          Fundamentos de personalización y optimización pedagógica con IA en Canvas
+          Diseño inteligente de actividades con IA Canvas
         </h3>
 
         <p>
-          Aplica funcionalidades de IA de Canvas LMS para optimizar la estructura,
-          las instrucciones y la comunicación pedagógica del aula virtual,
-          mejorando la orientación del estudiante.
+          Aplica herramientas IA de Canvas LMS para diseñar actividades e instrucciones
+          pedagógicas estructuradas que favorezcan la participación y autonomía del
+          estudiante en el aula virtual, utilizando contextos reales de enseñanza y
+          criterios institucionales.
         </p>
+
+        <div class="sise-module-topics">
+          <strong>Temas del módulo</strong>
+          <ul>
+            <li>Descubriendo las herramientas IA de Canvas LMS para la productividad docente.</li>
+            <li>Generación asistida de actividades e instrucciones con IA Canvas.</li>
+          </ul>
+        </div>
 
         <a
           class="sise-module-btn"
@@ -1228,14 +1265,22 @@
         </div>
 
         <h3>
-          Personalización del aprendizaje y evaluación inteligente con IA
+          Evaluación y personalización inteligente con IA Canvas
         </h3>
 
         <p>
-          Implementa herramientas de IA de Canvas LMS para personalizar actividades,
-          evaluaciones y experiencias de aprendizaje, fortaleciendo la participación
-          y el acompañamiento del estudiante en contextos virtuales.
+          Implementa herramientas IA de Canvas LMS para diseñar evaluaciones, rúbricas y
+          estrategias de personalización del aprendizaje que optimicen el acompañamiento
+          y seguimiento del estudiante en cursos virtuales.
         </p>
+
+        <div class="sise-module-topics">
+          <strong>Temas del módulo</strong>
+          <ul>
+            <li>Diseño de evaluaciones y rúbricas mediante IA Canvas.</li>
+            <li>Personalización del aprendizaje y optimización del aula virtual con IA Canvas.</li>
+          </ul>
+        </div>
 
         <a
           class="sise-module-btn"
@@ -1429,50 +1474,32 @@
 
 </div>
 
-<script>
+<script> 
   document.addEventListener("DOMContentLoaded", function () {
-    function esEnlaceExternoValido(enlace) {
-      var destino = enlace.getAttribute("href");
+    const enlaces = document.querySelectorAll("a[href]");
 
-      return Boolean(
+    enlaces.forEach(function (enlace) {
+      const destino = enlace.getAttribute("href");
+
+      if (
         destino &&
         !destino.startsWith("#") &&
-        !destino.startsWith("javascript:") &&
-        !destino.startsWith("mailto:") &&
-        !destino.startsWith("tel:")
-      );
-    }
+        !destino.startsWith("javascript:")
+      ) {
+        enlace.setAttribute("target", "_blank");
+        enlace.setAttribute("rel", "noopener noreferrer");
 
-    function prepararEnlaces() {
-      var enlaces = document.querySelectorAll("a[href]");
+        enlace.addEventListener("click", function (evento) {
+          evento.preventDefault();
+          evento.stopPropagation();
 
-      enlaces.forEach(function (enlace) {
-        if (esEnlaceExternoValido(enlace)) {
-          enlace.setAttribute("target", "_blank");
-          enlace.setAttribute("rel", "noopener noreferrer");
-        }
-      });
-    }
+          const url = enlace.href;
 
-    prepararEnlaces();
-
-    var observador = new MutationObserver(prepararEnlaces);
-    observador.observe(document.body || document.documentElement, {
-      childList: true,
-      subtree: true
-    });
-
-    document.addEventListener("click", function (evento) {
-      var enlace = evento.target.closest("a[href]");
-
-      if (!enlace || !esEnlaceExternoValido(enlace)) {
-        return;
+          if (url) {
+            window.open(url, "_blank", "noopener,noreferrer");
+          }
+        });
       }
-
-      evento.preventDefault();
-      evento.stopPropagation();
-
-      window.open(enlace.href, "_blank", "noopener,noreferrer");
-    }, true);
+    });
   });
 </script>
